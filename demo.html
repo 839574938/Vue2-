@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<div id="app">
+    {{ msg }}
+</div>
+
+<script src="vue1.0.1.js"></script>
+<script>
+    //自定义选项count 来写的自定义策略函数
+    Vue.config.optionMergeStrategies.count = function (parentVal, childVal, vm) {
+        return childVal >= 99 ? childVal : 99;
+    };
+
+    let vm = new Vue({
+        el: "#app",
+        data: {
+            msg: "nihao "
+        },
+        count: 101
+    });
+
+    console.log(vm.$options)
+</script>
+</body>
+</html>
