@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+
+    var attribute = /^\s*([^\s"'<>\/=]+)(?:\s*(=)\s*(?:"([^"]*)"+|'([^']*)'+|([^\s"'=<>`]+)))?/;
+    // could use https://www.w3.org/TR/1999/REC-xml-names-19990114/#NT-QName
+    // but for Vue templates we can enforce a simple charset
+    var ncname = '[a-zA-Z_][\\w\\-\\.]*';
+    var qnameCapture = "((?:" + ncname + "\\:)?" + ncname + ")";
+    var startTagOpen = new RegExp(("^<" + qnameCapture));
+    var startTagClose = /^\s*(\/?)>/;
+    var endTag = new RegExp(("^<\\/" + qnameCapture + "[^>]*>"));
+    var doctype = /^<!DOCTYPE [^>]+>/i;
+    // #7298: escape - to avoid being pased as HTML comment when inlined in page
+    var comment = /^<!\--/;
+    var conditionalComment = /^<!\[/;
+
+
+    var no = function () {
+    }
+
+    function parseHTML(html, options) {
+
+        var stack = [];
+        var expectHTML = options.expectHTML;
+        var isUnaryTag$$1 = options.isUnaryTag || no;
+        var canBeLeftOpenTag$$1 = options.canBeLeftOpenTag || no;
+        var index = 0;
+        var last, lastTag;
+
+        //while(html) {
+        if (!lastTag || !isPlainTextElement(lastTag)) {
+            var textEnd = html.indexOf('<');
+            if (textEnd === 0) {
+                var startTagMatch = parseStartTag();
+            }
+        }
+
+        //}
+
+
+        function advance(n) {
+            index += n;
+            html = html.substring(n);
+        }
+
+
+        function parseStartTag() {
+            // startTagOpen = /^<((?:[a-zA-Z_][\w\-\.]*\:)?[a-zA-Z_][\w\-\.]*)/
+            var start = html.match(startTagOpen);
+            if (start) {
+                var match = {
+                    tagName: start[1],
+                    attrs: [],
+                    start: index
+                };
+                advance(start[0].length);
+                var end, attr;
+                //startTagClose /^\s*(\/?)>/ 是否是一个一元标签 <img />
+                //attribute = /^\s*([^\s"'<>\/=]+)(?:\s*(=)\s*(?:"([^"]*)"+|'([^']*)'+|([^\s"'=<>`]+)))?/
+                while (!(end = html.match(startTagClose)) && (attr = html.match(attribute))) {
+                    advance(attr[0].length);
+                    match.attrs.push(attr);
+                }
+
+                if (end) {
+                    match.unarySlash = end[1];
+                    advance(end[0].length);
+                    match.end = index;
+                    return match
+                }
+            }
+        }
+    }
+
+
+    parseHTML("<div id='app'>{{ message }} <span></span></div>", {})
+
+
+</script>
+</body>
+</html>

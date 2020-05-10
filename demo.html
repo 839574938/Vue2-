@@ -13,19 +13,25 @@
 <script src="vue1.0.1.js"></script>
 <script>
     //自定义选项count 来写的自定义策略函数
-    Vue.config.optionMergeStrategies.count = function (parentVal, childVal, vm) {
-        return childVal >= 99 ? childVal : 99;
-    };
+    // Vue.config.optionMergeStrategies.count = function(parentVal, childVal, vm) {
+    // 	return childVal >= 99 ? childVal : 99;
+    // };
 
     let vm = new Vue({
         el: "#app",
         data: {
-            msg: "nihao "
+            msg: "nihao ",
+            ret: [1, 2, 3, 4, 5]
         },
-        count: 101
     });
 
-    console.log(vm.$options)
+    vm.msg = "123";
+
+
+    let requireReg = /\brequire\s*\(\s*(['"])(.+?)\1\s*\)/g;
+    let isRequest = requireReg.exec("require('nihao')");
+    console.log(isRequest)
+
 </script>
 </body>
 </html>

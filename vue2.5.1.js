@@ -9,7 +9,7 @@
 		(global.Vue = factory());
 }(this, (function() {
 	'use strict';
-   
+
 	/*  */
 
 	var emptyObject = Object.freeze({});
@@ -9313,7 +9313,7 @@
 			var tagName = match.tagName;
 			var unarySlash = match.unarySlash;
 
-			if (expectHTML) {   
+			if (expectHTML) {
 				if (lastTag === 'p' && isNonPhrasingTag(tagName)) {
 					parseEndTag(lastTag);
 				}
@@ -9528,7 +9528,7 @@
 						"<" + tag + ">" + ', as they will not be parsed.'
 					);
 				}
-                
+
 				// apply pre-transforms
 				for (var i = 0; i < preTransforms.length; i++) {
 					element = preTransforms[i](element, options) || element;
@@ -10118,7 +10118,7 @@
 					exp: branch0.if,
 					block: branch0
 				});
-				// 2. add radio else-if condition 
+				// 2. add radio else-if condition
 				var branch1 = cloneASTElement(el);
 				getAndRemoveAttr(branch1, 'v-for', true);
 				addRawAttr(branch1, 'type', 'radio');
@@ -11309,6 +11309,8 @@
 		var el = query(id);
 		return el && el.innerHTML
 	});
+
+
 
 	var mount = Vue.prototype.$mount;
 	Vue.prototype.$mount = function(
